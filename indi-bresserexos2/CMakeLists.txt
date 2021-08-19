@@ -15,13 +15,14 @@ include(CMakeCommon)
 
 find_package(Threads REQUIRED)
 find_package(INDI REQUIRED)
+find_package(Nova REQUIRED)
 
 include_directories( ${CMAKE_CURRENT_BINARY_DIR})
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR})
 include_directories( ${INDI_INCLUDE_DIR})
 
 add_executable(indi_bresserexos2 BresserExosIIGoToDriver.cpp IndiSerialWrapper.cpp SerialCommand.cpp)
-target_link_libraries(indi_bresserexos2 ${INDI_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} Threads::Threads)
+target_link_libraries(indi_bresserexos2 ${INDI_LIBRARIES} ${NOVA_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} Threads::Threads)
 target_include_directories(indi_bresserexos2 PUBLIC
 						  "${PROJECT_BINARY_DIR}"
 						  )
