@@ -1,10 +1,10 @@
 cmake_minimum_required (VERSION 3.0)
 project (libplayerone)
 
-# Using PlayerOne Camera SDK Version 2.0.6 updated on 2022-3-11
+# Using PlayerOne Camera SDK Version 3.0.3 updated on 2022-6-20
 
-set (POACAM_VERSION "2.0.6")
-set (POACAM_SOVERSION "2")
+set (POACAM_VERSION "3.0.3")
+set (POACAM_SOVERSION "3")
 
 
 list (APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/")
@@ -19,6 +19,8 @@ set_target_properties (PlayerOneCamera  PROPERTIES VERSION ${POACAM_VERSION} SOV
 if (APPLE)
 
   set_property (TARGET PlayerOneCamera  PROPERTY IMPORTED_LOCATION "mac/libPlayerOneCamera.bin")
+
+  FIX_LIBRARY_ID("libPlayerOneCamera" "mac/libPlayerOneCamera.bin" "PLAYER ONE")
 
 elseif (UNIX AND NOT WIN32)
 

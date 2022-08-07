@@ -157,7 +157,8 @@ bool ToupBase::initProperties()
     ///////////////////////////////////////////////////////////////////////////////////
     IUFillSwitch(&BinningModeS[TC_BINNING_AVG], "TC_BINNING_AVG", "AVG", ISS_OFF);
     IUFillSwitch(&BinningModeS[TC_BINNING_ADD], "TC_BINNING_ADD", "Add", ISS_ON);
-    IUFillSwitchVector(&BinningModeSP, BinningModeS, 2, getDeviceName(), "CCD_BINNING_MODE", "Binning Mode", IMAGE_SETTINGS_TAB, IP_WO,
+    IUFillSwitchVector(&BinningModeSP, BinningModeS, 2, getDeviceName(), "CCD_BINNING_MODE", "Binning Mode", IMAGE_SETTINGS_TAB,
+                       IP_WO,
                        ISR_1OFMANY, 0, IPS_IDLE);
 
 
@@ -2060,8 +2061,7 @@ void ToupBase::TimerHit()
             timeleft = 0;
         PrimaryCCD.setExposureLeft(timeleft);
     }
-
-    if (m_Instance->model->flag & CP(FLAG_GETTEMPERATURE))
+    else if (m_Instance->model->flag & CP(FLAG_GETTEMPERATURE))
     {
         double currentTemperature = TemperatureN[0].value;
         int16_t nTemperature = 0;
@@ -2276,16 +2276,16 @@ void ToupBase::refreshControls()
     IDSetNumber(&ControlNP, nullptr);
 }
 
-void ToupBase::addFITSKeywords(fitsfile * fptr, INDI::CCDChip * targetChip)
+void ToupBase::addFITSKeywords(INDI::CCDChip * targetChip)
 {
-    INDI::CCD::addFITSKeywords(fptr, targetChip);
+    INDI::CCD::addFITSKeywords(targetChip);
 
     INumber *gainNP = IUFindNumber(&ControlNP, ControlN[TC_GAIN].name);
 
     if (gainNP)
     {
         int status = 0;
-        fits_update_key_s(fptr, TDOUBLE, "Gain", &(gainNP->value), "Gain", &status);
+        fits_update_key_s(*targetChip->fitsFilePointer(), TDOUBLE, "Gain", &(gainNP->value), "Gain", &status);
     }
 }
 
